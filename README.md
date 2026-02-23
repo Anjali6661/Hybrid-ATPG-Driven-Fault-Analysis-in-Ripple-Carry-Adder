@@ -37,14 +37,22 @@ A test scenario could include injecting a stuck-at-0 fault on input A[0] by sett
 
 ---
 
-## 📈 Signal Analysis and Waveform Interpretation
-During simulation, the system clock (`clk`) had a 10 ns period, toggling every 5 ns. The system reset (`reset`) remained low (inactive) during normal operation. The fault type selector (`fault_type[1:0]`) cycled through 00 → 01 → 10 for stuck-at, transition, and bridging faults. The `inject_fault` signal pulsed high during each test scenario, while the `fault_value[3:0]` was held constant at 0F. The ATPG-generated test pattern (`test_pattern[3:0]`) remained at 05. The Ripple Carry Adder output (`sum[4:0]`) showed normal operation as 0F and faulty operation as 14.
+### 📊 Signal Analysis and Waveform Interpretation
 
-In time-based observations, normal operation from 0–10 ns produced SUM = 0F. A stuck-at fault from 10–30 ns resulted in SUM = 14, confirming detection. Normal operation resumed from 30–50 ns. A transition fault from 50–70 ns resulted in SUM = 14, followed by normal operation from 70–90 ns. A bridging fault from 90–100 ns was detected with SUM = 14. These results show 100% fault detection, real-time injection, clear observability, and effective ATPG pattern generation.
-
-Normal operation produces SUM = 0F (15 decimal), while faulty operation produces SUM = 14 (20 decimal). Transitions between normal and faulted states are clean, and faults are detected immediately when injected.
-
----
+| Signal / Time Window      | Description / Test Scenario                                          | Observed Value / SUM | Status                  |
+|---------------------------|---------------------------------------------------------------------|--------------------|------------------------|
+| `clk`                     | System clock with 10 ns period                                       | Toggles every 5 ns | Normal operation       |
+| `reset`                   | System reset                                                        | Low (inactive)     | Normal operation       |
+| `fault_type[1:0]`         | Fault mode selector                                                 | 00 → 01 → 10      | Stuck-at, Transition, Bridging |
+| `inject_fault`            | Fault enable                                                        | Pulses high        | Fault injection active |
+| `fault_value[3:0]`        | Injected fault value                                                | 0F                 | Used for fault tests   |
+| `test_pattern[3:0]`       | ATPG-generated test pattern                                         | 05                 | Constant during tests  |
+| 0–10 ns                   | Normal operation                                                    | 0F (15 decimal)    | ✅ PASS                |
+| 10–30 ns                  | Stuck-at fault injection                                            | 14 (20 decimal)    | ✅ FAULT DETECTED      |
+| 30–50 ns                  | Return to normal                                                    | 0F (15 decimal)    | ✅ PASS                |
+| 50–70 ns                  | Transition fault injection                                          | 14 (20 decimal)    | ✅ FAULT DETECTED      |
+| 70–90 ns                  | Return to normal                                                    | 0F (15 decimal)    | ✅ PASS                |
+| 90–100 ns                 | Bridging fault injection                                            | 14 (20 decimal)    | ✅ FAULT DETECTED      |
 
 ## 🚀 Getting Started
 
