@@ -1,0 +1,5 @@
+# Tell GitHub that .v files are Verilog
+*.v linguist-language=Verilog linguist-detectable=true
+
+# Hide JavaScript from statistics
+*.js linguist-detectable=false
