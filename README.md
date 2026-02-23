@@ -1,0 +1,1 @@
+This project implements a Hybrid Automatic Test Pattern Generation (ATPG) system to test faults in a 4-bit Ripple Carry Adder. It combines three different algorithms to detect different types of faults in digital circuits.
