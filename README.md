@@ -36,23 +36,29 @@ The D-Algorithm achieves 95–98% fault coverage with medium test generation tim
 A test scenario could include injecting a stuck-at-0 fault on input A[0] by setting `inject_fault` to 1, `fault_value` to `4'b0000`, and selecting the D-Algorithm as the fault type. Transition faults and bridging faults can be tested similarly by changing the fault type and fault value. The ATPG engine automatically generates test patterns that trigger faults effectively.
 
 ---
+### 📊 Signal Behavior
 
-### 📊 Signal Analysis and Waveform Interpretation
+| Signal           | Description                   | Observed Value       | Status                  |
+|-----------------|-------------------------------|-------------------|------------------------|
+| `clk`           | System clock with 10 ns period | Toggles every 5 ns  | Normal operation       |
+| `reset`         | System reset                   | Low (inactive)      | Normal operation       |
+| `fault_type[1:0]` | Fault mode selector           | 00 → 01 → 10       | Stuck-at, Transition, Bridging |
+| `inject_fault`  | Fault enable                   | Pulses high        | Fault injection active |
+| `fault_value[3:0]` | Injected fault value         | 0F                  | Used for fault tests   |
+| `test_pattern[3:0]` | ATPG-generated test pattern | 05                  | Constant during tests  |
 
-| Signal / Time Window      | Description / Test Scenario                                          | Observed Value / SUM | Status                  |
-|---------------------------|---------------------------------------------------------------------|--------------------|------------------------|
-| `clk`                     | System clock with 10 ns period                                       | Toggles every 5 ns | Normal operation       |
-| `reset`                   | System reset                                                        | Low (inactive)     | Normal operation       |
-| `fault_type[1:0]`         | Fault mode selector                                                 | 00 → 01 → 10      | Stuck-at, Transition, Bridging |
-| `inject_fault`            | Fault enable                                                        | Pulses high        | Fault injection active |
-| `fault_value[3:0]`        | Injected fault value                                                | 0F                 | Used for fault tests   |
-| `test_pattern[3:0]`       | ATPG-generated test pattern                                         | 05                 | Constant during tests  |
-| 0–10 ns                   | Normal operation                                                    | 0F (15 decimal)    | ✅ PASS                |
-| 10–30 ns                  | Stuck-at fault injection                                            | 14 (20 decimal)    | ✅ FAULT DETECTED      |
-| 30–50 ns                  | Return to normal                                                    | 0F (15 decimal)    | ✅ PASS                |
-| 50–70 ns                  | Transition fault injection                                          | 14 (20 decimal)    | ✅ FAULT DETECTED      |
-| 70–90 ns                  | Return to normal                                                    | 0F (15 decimal)    | ✅ PASS                |
-| 90–100 ns                 | Bridging fault injection                                            | 14 (20 decimal)    | ✅ FAULT DETECTED      |
+---
+
+### ⏱️ Time-Based Fault Scenarios
+
+| Time Window  | Test Scenario                  | SUM Observed       | Status                  |
+|-------------|--------------------------------|------------------|------------------------|
+| 0–10 ns     | Normal operation               | 0F (15 decimal)  | ✅ PASS                |
+| 10–30 ns    | Stuck-at fault injection       | 14 (20 decimal)  | ✅ FAULT DETECTED      |
+| 30–50 ns    | Return to normal               | 0F (15 decimal)  | ✅ PASS                |
+| 50–70 ns    | Transition fault injection     | 14 (20 decimal)  | ✅ FAULT DETECTED      |
+| 70–90 ns    | Return to normal               | 0F (15 decimal)  | ✅ PASS                |
+| 90–100 ns   | Bridging fault injection       | 14 (20 decimal)  | ✅ FAULT DETECTED      |
 
 ## 🚀 Getting Started
 
