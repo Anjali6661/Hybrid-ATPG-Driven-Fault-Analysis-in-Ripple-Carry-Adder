@@ -1,5 +1,16 @@
-# Tell GitHub that .v files are Verilog
+# Force GitHub to recognize Verilog files
 *.v linguist-language=Verilog linguist-detectable=true
 
-# Hide JavaScript from statistics
+# Explicitly mark TCL files as NOT Verilog
+*.tcl linguist-detectable=false linguist-vendored=true
+
+# Hide all other extensions that might confuse GitHub
 *.js linguist-detectable=false
+*.tcl linguist-detectable=false
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+*.xml linguist-detectable=false
+
+# Mark documentation files
+*.md linguist-documentation
+*.txt linguist-documentation
